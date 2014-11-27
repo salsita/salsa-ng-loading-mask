@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="salsaNg">
+<head>
+  <meta charset="utf-8">
+  <title>salsa-ng-loading-mask example</title>
+
+  <script src="/static/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/static/bower_components/angular/angular.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/static/src/loadingMask.css" />
+  <script src="/static/src/loadingMask.js"></script>
+
+  <script type="text/javascript">
+    angular.module('salsaNg', ['salsa-ng-loading-mask'])
+            .controller('ExampleController', function ($scope, $http) {
+              $scope.fullScreenMask = function () {
+                $http.get('/dummy?time=1', {
+                  loadingMask: 'fullscreen'
+                });
+                $http.get('/dummy?time=2', {
+                  loadingMask: 'fullscreen'
+                });
+              };
+              $scope.globalMask = function() {
+                $http.get('/dummy?time=1', {
+                  loadingMask: true
+                });
+              };
+              $scope.customMask = function() {
+                $http.get('/dummy?time=2', {
+                  loadingMask: 'custom'
+                });
+                $http.get('/dummy?time=1', {
+                  loadingMask: 'custom'
+                });
+              };
+            })
+            .config(function (SalsaLoadingMaskConfigProvider) {
+              SalsaLoadingMaskConfigProvider.set({
+                template: '<span ng-if="!context.loadingText">This is our predefined template</span> <span ng-if="context.loadingText">{{context.loadingText}}</span>'
+              })
+            });
+  </script>
+  <style>
+    .component {
+      width: 300px;
+      height: 100px;
+      border: 1px solid #000;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body ng-controller="ExampleController">
+  <button ng-click="fullScreenMask()">Make a full screen mask request</button>
+  <button ng-click="globalMask()">Make global group masking for component1</button>
+  <button ng-click="customMask()">Make custom group masking for component 2 and 3</button>
+
+  <div salsa-loading-mask salsa-loading-mask-fullscreen salsa-loading-mask-group="fullscreen"
+       salsa-loading-mask-template-data="{loadingText: 'We may also specify custom template for fullscreen mask'}"></div>
+
+  <div class="component" salsa-loading-mask
+       salsa-loading-mask-template-data="{loadingText: 'We have a custom loading text here'}">This is component 1
+  </div>
+
+  <div class="component" salsa-loading-mask salsa-loading-mask-group="custom">This is component 2</div>
+
+  <div class="component" salsa-loading-mask salsa-loading-mask-group="custom">This is component 3</div>
+</body>
+</html>

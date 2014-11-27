@@ -1,0 +1,7 @@
+.salsa-mask {
+    background-color: #aeaeae;
+    display: none;
+}
+.salsa-mask.shown {
+    display: block;
+}
