@@ -1,15 +1,7 @@
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     minifyCss = require('gulp-minify-css'),
-    rename = require('gulp-rename'),
-    karma = require('karma').server;
-
-gulp.task('test', function(done) {
-  karma.start({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: false
-  }, done);
-});
+    rename = require('gulp-rename');
 
 gulp.task('build', function() {
   gulp.src('src/loadingMask.js')

@@ -1,6 +1,5 @@
 module.exports = function(config) {
   config.set({
-    browsers: ['Chrome'],
     frameworks: ['jasmine'],
     files: [
       'bower_components/jquery/dist/jquery.js',
