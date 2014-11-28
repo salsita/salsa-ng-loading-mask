@@ -18,6 +18,7 @@
               $httpBackend.whenGET(/\/dummy/).respond(200);
               $httpBackend.whenGET(/\/error/).respond(500);
 
+              // sends two requests for fullscreen masking
               $scope.fullScreenMask = function () {
                 $http.get('/dummy?time=1', {
                   loadingMask: 'fullscreen'
@@ -26,11 +27,15 @@
                   loadingMask: 'fullscreen'
                 });
               };
+
+              // sends request raising error
               $scope.globalMask = function() {
                 $http.get('/error?time=1', {
                   loadingMask: true
                 });
               };
+
+              // sends two request for mask group custom
               $scope.customMask = function() {
                 $http.get('/dummy?time=2', {
                   loadingMask: 'custom'
@@ -41,10 +46,14 @@
               };
             })
             .config(function($provide, SalsaLoadingMaskConfigProvider) {
+              // It is also possible to add a template for mask (e.g. including custom spinner)
               SalsaLoadingMaskConfigProvider.set({
                 template: '<span ng-if="!context.loadingText">This is our predefined template</span> <span ng-if="context.loadingText">{{context.loadingText}}</span>'
               });
 
+              // HTTP requests are just decorated to be capable of delayed response,
+              // time parameter is used as the response time.
+              // You will not need this on production!
               $provide.decorator('$httpBackend', function($delegate) {
                 var decoratedHttpBackend = function(method, url) {
                   var originalArguments = arguments;
