@@ -19,10 +19,10 @@ Then just append JS and CSS file to your HTML file. Angular.JS and jQuery must b
 <script type="text/javascript" src="bower_components/salsa-ng-loading-mask/dist/loadingMask.min.js"></script>
 ```
 
-There is an example folder with usage of the component. It is possible to run ```index.html``` file inside your browser without
+There is an example folder with usage of the module. It is possible to run ```index.html``` file inside your browser without
 need of any server.
 
-Add salsaNgLoadingMask module to your dependencies application dependencies. Then use config param ```loadingMask: true``` to
+Add salsaNgLoadingMask module to your application dependencies. Then use config param ```loadingMask: true``` to
 any of your $http requests. Append a div to your page using directive ```salsa-loading-mask```
 
 ```javascript
