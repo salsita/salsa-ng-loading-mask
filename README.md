@@ -19,6 +19,9 @@ Then just append JS and CSS file to your HTML file. Angular.JS and jQuery must b
 <script type="text/javascript" src="bower_components/salsa-ng-loading-mask/dist/loadingMask.min.js"></script>
 ```
 
+There is an example folder with usage of the component. It is possible to run ```index.html``` file inside your browser without
+need of any server.
+
 ## Development
 This module uses ```gulp``` as a task runner. Install all dependencies via npm ```npm install``` and ```bower install```.
 ```gulp build``` creates distribution folder. Tests may be started via ```npm test```
