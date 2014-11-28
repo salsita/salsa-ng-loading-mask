@@ -1,10 +1,7 @@
-var gulp = require('gulp'),
-    nodemon = require('gulp-nodemon');
+var gulp = require('gulp');
 
-gulp.task('example', function() {
-  nodemon({
-    script: 'example/server.js'
-  });
+gulp.task('build', function() {
+  
 });
 
-gulp.task('default', ['example']);
+gulp.task('default', ['build']);

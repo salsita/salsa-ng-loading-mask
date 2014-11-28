@@ -4,15 +4,20 @@
   <meta charset="utf-8">
   <title>salsa-ng-loading-mask example</title>
 
-  <script src="/static/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/static/bower_components/angular/angular.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
+  <script src="../bower_components/query-string/query-string.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="/static/src/loadingMask.css" />
-  <script src="/static/src/loadingMask.js"></script>
+  <link rel="stylesheet" type="text/css" href="../src/loadingMask.css" />
+  <script src="../src/loadingMask.js"></script>
 
   <script type="text/javascript">
-    angular.module('salsaNg', ['salsa-ng-loading-mask'])
-            .controller('ExampleController', function ($scope, $http) {
+    angular.module('salsaNg', ['salsaNgLoadingMask', 'ngMockE2E'])
+            .controller('ExampleController', function ($scope, $http, $httpBackend) {
+              $httpBackend.whenGET(/\/dummy/).respond(200);
+              $httpBackend.whenGET(/\/error/).respond(500);
+
               $scope.fullScreenMask = function () {
                 $http.get('/dummy?time=1', {
                   loadingMask: 'fullscreen'
@@ -22,7 +27,7 @@
                 });
               };
               $scope.globalMask = function() {
-                $http.get('/dummy?time=1', {
+                $http.get('/error?time=1', {
                   loadingMask: true
                 });
               };
@@ -35,10 +40,24 @@
                 });
               };
             })
-            .config(function (SalsaLoadingMaskConfigProvider) {
+            .config(function($provide, SalsaLoadingMaskConfigProvider) {
               SalsaLoadingMaskConfigProvider.set({
                 template: '<span ng-if="!context.loadingText">This is our predefined template</span> <span ng-if="context.loadingText">{{context.loadingText}}</span>'
-              })
+              });
+
+              $provide.decorator('$httpBackend', function($delegate) {
+                var decoratedHttpBackend = function(method, url) {
+                  var originalArguments = arguments;
+
+                  var query = queryString.parse(url.split('?')[1]);
+                  setTimeout(function() {
+                    $delegate.apply($delegate, originalArguments);
+                  }, query.time * 1000);
+                };
+                angular.extend(decoratedHttpBackend, $delegate);
+
+                return decoratedHttpBackend;
+              });
             });
   </script>
   <style>

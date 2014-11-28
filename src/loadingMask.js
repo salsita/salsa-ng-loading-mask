@@ -1,4 +1,4 @@
-angular.module('salsa-ng-loading-mask', [])
+angular.module('salsaNgLoadingMask', [])
   .factory('SalsaLoadingMaskScope', function($rootScope) {
     var scope = $rootScope.$new();
     scope.CUSTOM_GROUP_PREFIX = 'customGroup';
@@ -33,6 +33,29 @@ angular.module('salsa-ng-loading-mask', [])
       return scope[groupName];
     };
 
+    var responseHandler = function(response, success) {
+      if (response.config.loadingMask) {
+        var groupName = getLoadingMaskGroupName(response.config),
+          maskGroup = getMaskGroup($rootScope, groupName);
+
+        maskGroup.finished++;
+
+        if (maskGroup.started === maskGroup.finished) {
+          if (success) {
+            SalsaLoadingMaskScope.$broadcast('salsa:hideLoadingMask:' + groupName);
+          } else {
+            SalsaLoadingMaskScope.$broadcast('salsa:errorHideLoadingMask:' + groupName);
+          }
+
+          maskGroup.hidingMaskShowed = false;
+          maskGroup.started = 0;
+          maskGroup.finished = 0;
+        }
+      }
+
+      return response;
+    };
+
     return {
       'request': function(config) {
         if (config.loadingMask) {
@@ -48,24 +71,11 @@ angular.module('salsa-ng-loading-mask', [])
 
         return config;
       },
-      //FIXME:
+      'responseError': function(response) {
+        return responseHandler(response, false);
+      },
       'response': function(response) {
-        if (response.config.loadingMask) {
-          var groupName = getLoadingMaskGroupName(response.config),
-              maskGroup = getMaskGroup($rootScope, groupName);
-
-          maskGroup.finished++;
-
-          if (maskGroup.started === maskGroup.finished) {
-            SalsaLoadingMaskScope.$broadcast('salsa:hideLoadingMask:' + groupName);
-
-            maskGroup.hidingMaskShowed = false;
-            maskGroup.started = 0;
-            maskGroup.finished = 0;
-          }
-        }
-
-        return response;
+        return responseHandler(response, true);
       }
     }
   })
@@ -87,7 +97,6 @@ angular.module('salsa-ng-loading-mask', [])
 
         scope.context = scope.templateData();
         SalsaLoadingMaskScope.$on('salsa:showLoadingMask:' + groupName, function() {
-          //FIXME:
           if (scope.fullScreenMask !== undefined) {
             maskElement.css('position', 'fixed');
             maskElement.css('left', 0);
@@ -102,9 +111,14 @@ angular.module('salsa-ng-loading-mask', [])
             maskElement.css('z-index', 998);
           }
 
+          maskElement.removeClass('error');
           maskElement.addClass('shown');
         });
         SalsaLoadingMaskScope.$on('salsa:hideLoadingMask:' + groupName, function() {
+          maskElement.removeClass('shown');
+        });
+        SalsaLoadingMaskScope.$on('salsa:errorHideLoadingMask:' + groupName, function() {
+          maskElement.addClass('error');
           maskElement.removeClass('shown');
         });
       }
