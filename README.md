@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/tomkis1/salsa-ng-loading-mask.svg?branch=master)](https://travis-ci.org/tomkis1/salsa-ng-loading-mask)
