@@ -5,6 +5,7 @@
   "authors": [
     "Salsitasoft s.r.o."
   ],
+  "main": "dist/loadingMask.min.js",
   "ignore": [
     "**/.*",
     "node_modules",
