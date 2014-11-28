@@ -53,7 +53,7 @@
 
               // HTTP requests are just decorated to be capable of delayed response,
               // time parameter is used as the response time.
-              // You will not need this on production!
+              // You will not need this on production
               $provide.decorator('$httpBackend', function($delegate) {
                 var decoratedHttpBackend = function(method, url) {
                   var originalArguments = arguments;
