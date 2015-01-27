@@ -1,7 +1,8 @@
-# salsa-ng-loading-mask [![Build Status](https://travis-ci.org/tomkis1/salsa-ng-loading-mask.svg?branch=master)](https://travis-ci.org/tomkis1/salsa-ng-loading-mask)
+# salsa-ng-loading-mask [![Build Status](https://travis-ci.org/salsita/salsa-ng-loading-mask.svg?branch=master)](https://travis-ci.org/tomkis1/salsa-ng-loading-mask)
 
 This [Angular.JS](https://angularjs.org/) module allows masking of any DOM element (even whole body) automatically when `$http` or `$resource` request is invoked.
 The mask is shown once HTTP request is called (using angular's [interceptors](https://docs.angularjs.org/api/ng/service/$http#interceptors)) and dismissed on either success or failure callback.
+You can override default stylesheet to make the mask look exactly as you want, there is also option to provide text to be shown in the mask.
 
 ## Usage
 
