@@ -6,7 +6,7 @@ angular.module('salsaNgLoadingMask', [])
 
     return scope;
   })
-  .factory('SalsaLoadingMaskHttpInterceptor', function($rootScope, SalsaLoadingMaskScope) {
+  .factory('SalsaLoadingMaskHttpInterceptor', function($rootScope, SalsaLoadingMaskScope, $q) {
 
     var getLoadingMaskGroupName = function(config) {
       if (!angular.isString(config.loadingMask)) {
@@ -72,7 +72,7 @@ angular.module('salsaNgLoadingMask', [])
         return config;
       },
       'responseError': function(response) {
-        return responseHandler(response, false);
+        return $q.reject(responseHandler(response, false));
       },
       'response': function(response) {
         return responseHandler(response, true);
